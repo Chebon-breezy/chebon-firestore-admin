@@ -1,59 +1,46 @@
-import React, { useState } from "react";
-import "./firebaseConfig"; // Add this line prevent firebase not loading error
-import { getFirestore, addDoc, collection, getDocs } from "firebase/firestore";
+import "./App.css";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { Home } from "./pages/Home";
+import { Login } from "./pages/Login";
+import { CreatePost } from "./pages/create-post";
+import { Navbar } from "./components/navbar";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./config/firebaseConfig";
 
 function App() {
-  const [inputValue1, setInputValue1] = useState("");
-  const [inputValue2, setInputValue2] = useState("");
-  let [storedValues, setStoredValues] = useState([]);
+  const [userInfo] = useAuthState(auth);
 
-  const db = getFirestore();
-
-  const saveDataToFirestore = async () => {
-    const docRef = await addDoc(collection(db, "myCollection"), {
-      field1: inputValue1,
-      field2: inputValue2,
-    });
-    alert("Document written to Database");
-  };
-
-  const fetchDataFromFirestore = async () => {
-    const querySnapshot = await getDocs(collection(db, "myCollection"));
-    const temporaryArr = [];
-    querySnapshot.forEach((doc) => {
-      temporaryArr.push(doc.data());
-    });
-    setStoredValues(temporaryArr);
+  const ProtectedRoute = ({ children }) => {
+    //If there is no current user navigate to '/login' page
+    if (!userInfo) {
+      return <Navigate to="/login" />;
+    }
+    return children;
   };
 
   return (
-    <div className="App">
-      <h1>Admin Save Data</h1>
-      <input
-        type="text"
-        value={inputValue1}
-        onChange={(e) => setInputValue1(e.target.value)}
-      />
-      <input
-        type="text"
-        value={inputValue2}
-        onChange={(e) => setInputValue2(e.target.value)}
-      />
-      <button onClick={saveDataToFirestore}>Save to Database</button> <br />
-      <br />
-      <button onClick={fetchDataFromFirestore}>Fetch from Database</button>{" "}
-      <br />
-      <br />
-      <div>
-        {storedValues.map((item, index) => (
-          <div key={index}>
-            <p>
-              {item.field1}: {item.field2}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/">
+          <Route
+            index
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="login" element={<Login />} />
+          <Route path="createpost" element={<CreatePost />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 
