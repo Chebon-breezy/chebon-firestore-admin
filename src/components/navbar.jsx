@@ -19,12 +19,12 @@ export const Navbar=()=>{
     return(
         <header>
         <nav className="navbar">
-        <div className="title">My Blog</div>
+        <div className="title">Admin Panel</div>
         <div className="nav-links">
         {userInfo && <Link to="/">Home</Link>}
         {!userInfo ? <Link to="/login">Login</Link> : (
         <>
-        <Link to="/createpost">Create Post</Link>
+        <Link to="/createpost">Add Content</Link>
         <button className="signout-button " onClick={signUserOut}>Sign Out</button>
         </>
         )}
