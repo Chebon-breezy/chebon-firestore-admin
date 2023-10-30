@@ -41,14 +41,14 @@ export const CreatePost=()=>{
     return(
         <div className="createPostPage">
             <div className="cp-container">
-                <h2><strong>Write your own Post !!</strong></h2>
+                <h2><strong>Admin add content to database !!</strong></h2>
                 <div className="inputPost">
                     <label>Title: </label>
                     <input placeholder="Title..." onChange={(event)=> setPostTitle(event.target.value)}/>
                 </div>
                 <div className="inputPost">
                     <label>Description: </label>
-                    <textarea placeholder="Describe your post..." onChange={(event)=> setPostText(event.target.value)}/>
+                    <textarea placeholder="Describe your Content..." onChange={(event)=> setPostText(event.target.value)}/>
                 </div>
                 <button className="submit-button" onClick={createPost}>Submit</button>
             </div>

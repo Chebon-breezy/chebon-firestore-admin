@@ -20,7 +20,7 @@ export const Login=()=>{
         
     return(
          <div className="login-container">
-            <h2>Login</h2>
+            <h2>Admin Login</h2>
             <p>Welcome back! Please log in to your account.</p>
             <button className="login-with-google-btn" onClick={signIn}>Login In With Google</button>
         </div>   
